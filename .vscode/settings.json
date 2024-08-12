@@ -1,0 +1,6 @@
+{
+  "terminal.integrated.commandsToSkipShell": [
+    "\"editor.codeActionsOnSave\": {\"source.fixAll\": true }"
+  ],
+  "prettier.configPath": "D:\\WebDev\\service\\.prettierrc"
+}
