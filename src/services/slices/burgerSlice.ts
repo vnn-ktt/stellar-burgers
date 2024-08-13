@@ -1,6 +1,6 @@
 import { createSlice, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { TConstructorIngredient } from '@utils-types';
+import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { v4 as uuidv4 } from 'uuid';
 
 type TBurgerState = {
@@ -17,14 +17,34 @@ const burgerSlice = createSlice({
   name: 'burger',
   initialState,
   reducers: {
-    addBurgerIngredient(state, action: PayloadAction<TConstructorIngredient>) {
-      const ingredient = action.payload;
-      const uniqueId = uuidv4();
-      if (ingredient.type === 'bun') {
-        state.bun = { ...ingredient, id: uniqueId };
-      } else {
-        state.ingredients.push({ ...ingredient, id: uniqueId });
+    moveIngredientUp: (state, action: PayloadAction<number>) => {
+      const index = action.payload;
+      if (index > 0) {
+        const ingredient = state.ingredients[index];
+        state.ingredients.splice(index, 1);
+        state.ingredients.splice(index - 1, 0, ingredient);
       }
+    },
+    moveIngredientDown: (state, action: PayloadAction<number>) => {
+      const index = action.payload;
+      if (index < state.ingredients.length - 1) {
+        const ingredient = state.ingredients[index];
+        state.ingredients.splice(index, 1);
+        state.ingredients.splice(index + 1, 0, ingredient);
+      }
+    },
+    addBurgerIngredient: {
+      reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
+        const ingredient = action.payload;
+        if (ingredient.type === 'bun') {
+          state.bun = ingredient;
+        } else {
+          state.ingredients.push(ingredient);
+        }
+      },
+      prepare: (ingredient: TIngredient) => ({
+        payload: { ...ingredient, id: uuidv4() }
+      })
     },
     removeBurgerIngredient(
       state,
@@ -49,7 +69,9 @@ const burgerSlice = createSlice({
 export const {
   addBurgerIngredient,
   removeBurgerIngredient,
-  clearBurgerConstructor
+  clearBurgerConstructor,
+  moveIngredientDown,
+  moveIngredientUp
 } = burgerSlice.actions;
 export const selectBun = (state: { burger: TBurgerState }) => state.burger.bun;
 export const selectBurgerIngredients = (state: { burger: TBurgerState }) =>

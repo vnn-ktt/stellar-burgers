@@ -35,8 +35,7 @@ export const BurgerConstructor: FC = () => {
   const onOrderClick = () => {
     if (!userIsAuthed) {
       navigate('/login');
-    }
-    if (constructorItems.bun || !orderRequest) {
+    } else if (constructorItems.bun || !orderRequest) {
       dispatch(orderBurger(burgerItemsIds));
     }
   };

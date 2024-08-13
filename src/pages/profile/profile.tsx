@@ -1,19 +1,26 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from '../../services/store';
 import { selectUser, updateUser } from '../../services/slices/userSlice';
+import useForm from '../../hooks/useForm';
+
+type TUser = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 export const Profile: FC = () => {
   const user = useSelector(selectUser);
-  const [formValue, setFormValue] = useState({
+
+  const { values, handleChange, resetForm, setValues } = useForm<TUser>({
     name: user.name,
     email: user.email,
     password: ''
   });
 
   useEffect(() => {
-    setFormValue((prevState) => ({
+    setValues((prevState: TUser) => ({
       ...prevState,
       name: user?.name || '',
       email: user?.email || ''
@@ -21,9 +28,9 @@ export const Profile: FC = () => {
   }, [user]);
 
   const isFormChanged =
-    formValue.name !== user?.name ||
-    formValue.email !== user?.email ||
-    !!formValue.password;
+    values.name !== user?.name ||
+    values.email !== user?.email ||
+    !!values.password;
 
   console.log(isFormChanged);
 
@@ -31,10 +38,10 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    const updatedFields: Partial<typeof formValue> = {};
-    if (formValue.name !== user.name) updatedFields.name = formValue.name;
-    if (formValue.email !== user.email) updatedFields.email = formValue.email;
-    if (formValue.password) updatedFields.password = formValue.password;
+    const updatedFields: Partial<TUser> = {};
+    if (values.name !== user.name) updatedFields.name = values.name;
+    if (values.email !== user.email) updatedFields.email = values.email;
+    if (values.password) updatedFields.password = values.password;
     if (Object.keys(updatedFields).length > 0) {
       dispatch(updateUser(updatedFields));
     }
@@ -42,30 +49,22 @@ export const Profile: FC = () => {
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
-    setFormValue({
-      name: user.name,
-      email: user.email,
-      password: ''
-    });
+    resetForm();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValue((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value
-    }));
+    handleChange(e);
   };
 
   return (
     <>
       <ProfileUI
-        formValue={formValue}
+        formValue={values}
         isFormChanged={isFormChanged}
         handleCancel={handleCancel}
         handleSubmit={handleSubmit}
         handleInputChange={handleInputChange}
       />
-      <Outlet />
     </>
   );
 };

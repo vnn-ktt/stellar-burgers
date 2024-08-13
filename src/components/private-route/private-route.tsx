@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { Preloader } from '@ui';
 import { useSelector } from '../../services/store';
 import {
@@ -9,18 +9,20 @@ import {
 
 type PrivateRouteProps = {
   children: ReactNode;
-  forAuthed?: boolean;
+  anonym?: boolean;
 };
 
 export const PrivateRoute: FC<PrivateRouteProps> = ({
   children,
-  forAuthed
+  anonym = false
 }) => {
+  const location = useLocation();
+  const from = location.state?.from || '/';
   const userIsLoading = useSelector(selectUserIsLoading);
   const userIsAuthed = useSelector(selectUserIsAuthed);
-
   if (userIsLoading) return <Preloader />;
-  if (userIsAuthed && forAuthed) return <Navigate to='/profile' />;
-  if (!userIsAuthed && !forAuthed) return <Navigate to='/login' />;
-  else return <>{children}</>;
+  if (userIsAuthed && anonym) return <Navigate to={from} />;
+  if (!userIsAuthed && !anonym)
+    return <Navigate to='/login' state={{ from: location }} />;
+  return children;
 };

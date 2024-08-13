@@ -61,7 +61,7 @@ const App = () => {
         <Route
           path='/login'
           element={
-            <PrivateRoute forAuthed>
+            <PrivateRoute anonym>
               <Login />
             </PrivateRoute>
           }
@@ -69,7 +69,7 @@ const App = () => {
         <Route
           path='/register'
           element={
-            <PrivateRoute forAuthed>
+            <PrivateRoute anonym>
               <Register />
             </PrivateRoute>
           }
@@ -77,7 +77,7 @@ const App = () => {
         <Route
           path='/forgot-password'
           element={
-            <PrivateRoute forAuthed>
+            <PrivateRoute anonym>
               <ForgotPassword />
             </PrivateRoute>
           }
@@ -85,7 +85,7 @@ const App = () => {
         <Route
           path='/reset-password'
           element={
-            <PrivateRoute forAuthed>
+            <PrivateRoute anonym>
               <ResetPassword />
             </PrivateRoute>
           }
@@ -97,20 +97,19 @@ const App = () => {
               <Profile />
             </PrivateRoute>
           }
-        >
-          <Route
-            path='orders'
-            element={
-              <PrivateRoute>
-                <ProfileOrders />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path='orders/:number'
-            element={<OrderModal onClose={() => navigate(-1)} />}
-          />
-        </Route>
+        />
+        <Route
+          path='profile/orders'
+          element={
+            <PrivateRoute>
+              <ProfileOrders />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='profile/:number'
+          element={<OrderModal onClose={() => navigate(-1)} />}
+        />
       </Routes>
     </div>
   );

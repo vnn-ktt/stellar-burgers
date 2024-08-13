@@ -97,13 +97,6 @@ export const orderBurger = createAsyncThunk(
   }
 );
 
-//TODO
-export const forgotPassword = createAsyncThunk(
-  'users/forgotPassword',
-  () => {}
-);
-export const resetPassword = createAsyncThunk('users/resetPassword', () => {});
-
 type TUserState = {
   user: TUser;
   orders: TOrder[];
