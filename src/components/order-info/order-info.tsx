@@ -2,12 +2,19 @@ import { FC, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { useParams } from 'react-router-dom';
-import { TIngredient } from '@utils-types';
+import { TIngredient, TOrder } from '@utils-types';
 import { useSelector } from '../../services/store';
-import { selectOrderByNumber } from '../../services/slices/feedsSlice';
 import { selectIngredients } from '../../services/slices/ingredientsSlice';
+import { selectFeedByNumber } from '../../services/slices/feedsSlice';
+import { selectUserOrderByNumber } from '../../services/slices/userSlice';
 
-export const OrderInfo: FC = () => {
+interface OrderInfoProps {
+  user?: boolean;
+}
+
+export const OrderInfo: FC<OrderInfoProps> = ({ user }) => {
+  const ingredients = useSelector(selectIngredients);
+
   const { number } = useParams<{ number: string }>();
 
   const orderNumber = number ? Number(number) : NaN;
@@ -15,16 +22,16 @@ export const OrderInfo: FC = () => {
     return <Preloader />;
   }
 
-  const orderData = useSelector((state) =>
-    selectOrderByNumber(orderNumber)(state)
-  );
-  const ingredients = useSelector(selectIngredients);
+  let orderData: TOrder | undefined;
+  if (user) {
+    orderData = useSelector(selectUserOrderByNumber(orderNumber));
+  } else {
+    orderData = useSelector(selectFeedByNumber(orderNumber));
+  }
 
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
-
     const date = new Date(orderData.createdAt);
-
     type TIngredientsWithCount = {
       [key: string]: TIngredient & { count: number };
     };
@@ -52,7 +59,6 @@ export const OrderInfo: FC = () => {
       (acc, item) => acc + item.price * item.count,
       0
     );
-
     return {
       ...orderData,
       ingredientsInfo,
@@ -60,10 +66,8 @@ export const OrderInfo: FC = () => {
       total
     };
   }, [orderData, ingredients]);
-
   if (!orderInfo) {
     return <Preloader />;
   }
-
   return <OrderInfoUI orderInfo={orderInfo} />;
 };

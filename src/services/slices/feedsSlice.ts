@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { TOrdersData } from '@utils-types';
-import { getFeedsApi } from '@api';
+import { TOrder, TOrdersData } from '@utils-types';
+import { getFeedsApi, getOrderByNumberApi } from '@api';
 
 type TFeedState = {
   feed: TOrdersData;
@@ -26,6 +26,17 @@ export const fetchFeeds = createAsyncThunk<TOrdersData>(
       return await getFeedsApi();
     } catch (error) {
       return rejectWithValue('Failed to fetch feed.');
+    }
+  }
+);
+
+export const fetchOrderByNumber = createAsyncThunk(
+  'orders/fetchOrder',
+  async (number: number, { rejectWithValue }) => {
+    try {
+      return await getOrderByNumberApi(number);
+    } catch (error) {
+      return rejectWithValue('Failed to fetch order by number');
     }
   }
 );
@@ -59,9 +70,8 @@ export const selectFeedsIsLoading = (state: { feeds: TFeedState }) =>
 export const selectFeed = (state: { feeds: TFeedState }) => state.feeds.feed;
 export const selectOrders = (state: { feeds: TFeedState }) =>
   state.feeds.feed.orders;
-export const selectOrderByNumber = (number: number) =>
-  createSelector([selectOrders], (orders) =>
-    orders.find((order) => order.number === number)
+export const selectFeedByNumber = (number: number) =>
+  createSelector([selectFeed], (feed) =>
+    feed.orders.find((elem) => elem.number === number)
   );
-
 export default feedsSlice.reducer;

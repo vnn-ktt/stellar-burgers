@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createSelector,
+  createAsyncThunk
+} from '@reduxjs/toolkit';
 import { TUser, TOrder } from '@utils-types';
 import {
   TLoginData,
@@ -233,6 +237,10 @@ export const selectOrderRequest = (state: { user: TUserState }) =>
   state.user.orderRequest;
 export const selectOrderModalData = (state: { user: TUserState }) =>
   state.user.orderModalData;
+export const selectUserOrderByNumber = (number: number) =>
+  createSelector([selectUserOrders], (orders) =>
+    orders.find((elem) => elem.number === number)
+  );
 
 export const { userLogout, auth, clearOrderModalData } = userSlice.actions;
 export default userSlice.reducer;

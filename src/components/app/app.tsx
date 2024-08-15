@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from '../../services/store';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 import { fetchFeeds } from '../../services/slices/feedsSlice';
-import { getUser } from '../../services/slices/userSlice';
+import { getUser, getUserOrders } from '../../services/slices/userSlice';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import '../../index.css';
 import styles from './app.module.css';
@@ -99,7 +99,7 @@ const App = () => {
           }
         />
         <Route
-          path='profile/orders'
+          path='/profile/orders'
           element={
             <PrivateRoute>
               <ProfileOrders />
@@ -107,8 +107,8 @@ const App = () => {
           }
         />
         <Route
-          path='profile/:number'
-          element={<OrderModal onClose={() => navigate(-1)} />}
+          path='/profile/orders/:number'
+          element={<OrderModal user onClose={() => navigate(-1)} />}
         />
       </Routes>
     </div>

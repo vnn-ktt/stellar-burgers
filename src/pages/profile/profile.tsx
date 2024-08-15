@@ -32,8 +32,6 @@ export const Profile: FC = () => {
     values.email !== user?.email ||
     !!values.password;
 
-  console.log(isFormChanged);
-
   const dispatch = useDispatch();
 
   const handleSubmit = (e: SyntheticEvent) => {
