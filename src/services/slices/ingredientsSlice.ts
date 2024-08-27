@@ -1,15 +1,15 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { TIngredient } from '@utils-types';
-import { getIngredientsApi } from '@api';
+import { getIngredientsApi } from '../../utils/burger-api';
 
-type IngredientsState = {
+export type TIngredientsState = {
   ingredients: TIngredient[];
   isLoading: boolean;
   error: string | null | object;
 };
 
-const initialState: IngredientsState = {
+const initialState: TIngredientsState = {
   ingredients: [],
   isLoading: false,
   error: null
@@ -51,9 +51,9 @@ const ingredientsSlice = createSlice({
 });
 
 export const selectIngredientsIsLoading = (state: {
-  ingredients: IngredientsState;
+  ingredients: TIngredientsState;
 }) => state.ingredients.isLoading;
-export const selectIngredients = (state: { ingredients: IngredientsState }) =>
+export const selectIngredients = (state: { ingredients: TIngredientsState }) =>
   state.ingredients.ingredients;
 export const selectBunIngredients = createSelector(
   [selectIngredients],

@@ -14,7 +14,7 @@ import {
   updateUserApi,
   getOrdersApi,
   orderBurgerApi
-} from '@api';
+} from '../../utils/burger-api';
 import { setCookie, deleteCookie } from '../../utils/cookie';
 
 export const registerUser = createAsyncThunk(
@@ -101,7 +101,7 @@ export const orderBurger = createAsyncThunk(
   }
 );
 
-type TUserState = {
+export type TUserState = {
   user: TUser;
   orders: TOrder[];
   isLoading: boolean;

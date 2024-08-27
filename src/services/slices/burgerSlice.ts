@@ -3,7 +3,7 @@ import { RootState } from '../store';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { v4 as uuidv4 } from 'uuid';
 
-type TBurgerState = {
+export type TBurgerState = {
   bun: TConstructorIngredient | null;
   ingredients: TConstructorIngredient[];
 };
