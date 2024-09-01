@@ -1,0 +1,44 @@
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "1",
+      "name": "Bun 1",
+      "type": "bun",
+      "proteins": 20,
+      "fat": 5,
+      "carbohydrates": 30,
+      "calories": 150,
+      "price": 50,
+      "image": "image_bun_1",
+      "image_mobile": "image_mobile_bun_1",
+      "image_large": "image_large_bun_1"
+    },
+    {
+      "_id": "2",
+      "name": "Sauce 1",
+      "type": "sauce",
+      "proteins": 10,
+      "fat": 3,
+      "carbohydrates": 15,
+      "calories": 80,
+      "price": 20,
+      "image": "image_sauce_1",
+      "image_mobile": "image_mobile_sauce_1",
+      "image_large": "image_large_sauce_1"
+    },
+    {
+      "_id": "3",
+      "name": "Main 1",
+      "type": "main",
+      "proteins": 30,
+      "fat": 10,
+      "carbohydrates": 40,
+      "calories": 200,
+      "price": 70,
+      "image": "image_main_1",
+      "image_mobile": "image_mobile_main_1",
+      "image_large": "image_large_main_1"
+    }
+  ]
+}
