@@ -22,6 +22,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
     {constructorItems.bun ? (
       <div className={`${styles.element} mb-4 mr-4`}>
         <ConstructorElement
+          data-cy='constructor-bun-top'
           type='top'
           isLocked
           text={`${constructorItems.bun.name} (верх)`}
@@ -36,7 +37,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         Выберите булки
       </div>
     )}
-    <ul className={styles.elements}>
+    <ul data-cy='constructor-ingredients' className={styles.elements}>
       {constructorItems.ingredients.length > 0 ? (
         constructorItems.ingredients.map(
           (item: TConstructorIngredient, index: number) => (
@@ -59,6 +60,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
     {constructorItems.bun ? (
       <div className={`${styles.element} mt-4 mr-4`}>
         <ConstructorElement
+          data-cy='constructor-bun-bottom'
           type='bottom'
           isLocked
           text={`${constructorItems.bun.name} (низ)`}
