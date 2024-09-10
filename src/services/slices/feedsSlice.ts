@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { TOrder, TOrdersData } from '@utils-types';
-import { getFeedsApi, getOrderByNumberApi } from '@api';
+import { getFeedsApi, getOrderByNumberApi } from '../../utils/burger-api';
 
-type TFeedState = {
+export type TFeedState = {
   feed: TOrdersData;
   isLoading: boolean;
   error: string | null | object;
